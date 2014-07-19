@@ -17,31 +17,23 @@ var Todo = Backbone.Model.extend({
   defaults: {
     title: '',
     completed: false
-  },
-
-  initialize: function(){
-    console.log('This model has been initialized');
   }
 });
 
-// Todo 1
+// If you need to read or clone all of a model’s data attributes, use its toJSON()
+// method. This method returns a copy of the attributes as an object (not a JSON
+//   string despite its name).
+
 var todo1 = new Todo();
-console.log(JSON.stringify(todo1))
+var todo1Attributes = todo1.toJSON();
+console.log(todo1Attributes);
 
-// Todo 2
 var todo2 = new Todo({
-  title: 'Check the attributes of both model instances in the console',
-});
-console.log(JSON.stringify(todo2));
-
-// Todo 3
-var todo3 = new Todo({
-  title: 'This todo is done, so take no action on this one.',
+  title: 'Try me',
   completed: true
 });
+console.log(todo2.toJSON());
 
-// Following logs: {"title":"This todo is done, so take no action on this one.","completed":true}
-console.log(JSON.stringify(todo3));
 
 </script>
 </body>
