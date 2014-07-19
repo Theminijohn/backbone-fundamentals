@@ -13,64 +13,34 @@
 <script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
 <script>
 
-// Backbone View
-var TodoView = Backbone.View.extend({
 
-  tagName: 'ul',
-  className: 'container',
-  id: 'todos',
+  // We create two DOM elements representing buttons
+  // which could easily be containers or something else
+  var button1 = $('<button></button>');
+  var button2 = $('<button></button>');
 
-  // If the element already exists in the page, you can set el as a
-  // CSS selector that matches the element.
-  el: '#bb-view',
+  // Define a new view
+  var View = Backbone.View.extend({
+    events: {
+      click: function(e) {
+        console.log(view.el === e.target);
+      }
+    }
+  });
 
-  // Alternatively, you can set el to an existing element when creating the view:
-  // var todoView = new TodoView({el: $('#bb-view')});
+  // Create a new instance of the view, applying it
+  // to button1
+  var view = new View({el: button1});
 
-  // Cache the template function for a single item.
-  todoTpl: _.template( "An example template" ),
+  // Apply the view to button2 using setElement
+  view.setElement(button2);
 
-  events: {
-    'dblclick label': 'edit',
-    'keypress .edit': 'updateOnEnter',
-    'blur .edit':   'close'
-  },
+  button1.trigger('click');
+  button2.trigger('click'); // returns true
 
-  initialize: function (options) {
-    // In Backbone 1.1.0, if you want to access passed options in
-    // your view, you will need to save them as follows:
-    this.options = options || {};
-  },
-
-  // Re-render the title of the todo item.
-  render: function() {
-    this.$el.html( this.todoTpl( this.model.attributes ) );
-    this.input = this.$('.edit');
-    return this;
-  },
-
-  edit: function() {
-    // executed when todo label is double clicked
-  },
-
-  close: function() {
-    // executed when todo loses focus
-  },
-
-  updateOnEnter: function( e ) {
-    // executed on each keypress when in todo edit mode,
-    // but we'll wait for enter to get in action
-  }
-
-
-});
-
-
-var todoView = new TodoView();
-
-// log reference to a DOM element that corresponds to the view instance
-console.log(todoView.el); // logs <li></li>
-
+var view = new Backbone.View;
+view.setElement('<p><a><b>test</b></a></p>');
+console.log(view.$('a b').html()); // outputs "test"
 
 
 </script>
