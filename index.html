@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<div id="bb-view"></div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
 <script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
@@ -14,7 +16,16 @@
 // Backbone View
 var TodoView = Backbone.View.extend({
 
-  tagName: 'li',
+  tagName: 'ul',
+  className: 'container',
+  id: 'todos',
+
+  // If the element already exists in the page, you can set el as a
+  // CSS selector that matches the element.
+  el: '#bb-view',
+
+  // Alternatively, you can set el to an existing element when creating the view:
+  // var todoView = new TodoView({el: $('#bb-view')});
 
   // Cache the template function for a single item.
   todoTpl: _.template( "An example template" ),
