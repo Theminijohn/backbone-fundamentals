@@ -12,50 +12,51 @@
 <script>
 
 // Backbone Model
+
+/* If you want to receive a notification when a Backbone model changes you can
+bind a listener to the model for its change event. A convenient place to add
+listeners is in the initialize() function as shown below: */
+
 var Todo = Backbone.Model.extend({
   // Default todo attribute values
   defaults: {
     title: '',
     completed: false
+  },
+  initialize: function() {
+    console.log('This model has been initialized');
+    this.on('change:title', function(){
+      console.log('- Title Value for this model have changed.')
+    });
+  },
+
+  setTitle: function(newTitle){
+    this.set({ title: newTitle });
   }
 });
 
-var myTodo = new Todo({
-  title: 'Set through instantiation'
-});
-console.log('Todo title: ' + myTodo.get('title'));
-console.log('Completed: ' + myTodo.get('completed'));
+var myTodo = new Todo();
 
-// Set single attribute value at a time through Model.set():
-myTodo.set('title', 'Title attribute set throug Model.set()');
-console.log('Todo title: ' + myTodo.get('title'));
-console.log('Completed: ' + myTodo.get('completed'));
+myTodo.set('title', 'The listener is triggered whenever an attribute value changes.');
+console.log('Title has changed: ' + myTodo.get('title'));
+
+myTodo.set('completed', true);
+console.log('Completed has changed: ' + myTodo.get('completed'));
 
 myTodo.set({
-  title: 'Both attributes set trhough Model.set()',
+  title: 'Changing more than one attribute at the same time only triggers the listener once.',
   completed: true
 });
-console.log('Todo title: ' + myTodo.get('title'));
-console.log('Completed: ' + myTodo.get('completed'));
 
 
-// -----------------------------------------------------------------------------
-// Direct Access
-// -----------------------------------------------------------------------------
-
-var Person = new Backbone.Model();
-Person.on('change:name', function() {console.log('Name Changed')});
-Person.set({name: 'Andrew'});
-
-Person.set({name: 'Jeremy'}, {silent: true});
-
-console.log(Person.hasChanged('name'));
-console.log(Person.hasChanged(null));
-
-// Remember where possible it is best practice to use Model.set(), or
-// direct instantiation.
-
-
+/* You can also listen for changes to individual attributes in a Backbone model.
+In the following example, we log a message whenever a specific attribute
+(the title of our Todo model) is altered. */
+myTodo.set('title', 'check what\'s logged');
+myTodo.setTitle('Go fishing on Sunday');
+// But, this change type is not observed, so no listener is triggered:
+myTodo.set('completed', true);
+console.log('Todo set as completed: ' + myTodo.get('completed'));
 
 
 </script>
