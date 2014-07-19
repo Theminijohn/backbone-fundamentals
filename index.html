@@ -13,26 +13,49 @@
 
 // Backbone Model
 var Todo = Backbone.Model.extend({
-
+  // Default todo attribute values
   defaults: {
     title: '',
     completed: false
   }
 });
 
-// If you need to read or clone all of a model’s data attributes, use its toJSON()
-// method. This method returns a copy of the attributes as an object (not a JSON
-//   string despite its name).
+var myTodo = new Todo({
+  title: 'Set through instantiation'
+});
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
 
-var todo1 = new Todo();
-var todo1Attributes = todo1.toJSON();
-console.log(todo1Attributes);
+// Set single attribute value at a time through Model.set():
+myTodo.set('title', 'Title attribute set throug Model.set()');
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
 
-var todo2 = new Todo({
-  title: 'Try me',
+myTodo.set({
+  title: 'Both attributes set trhough Model.set()',
   completed: true
 });
-console.log(todo2.toJSON());
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
+
+
+// -----------------------------------------------------------------------------
+// Direct Access
+// -----------------------------------------------------------------------------
+
+var Person = new Backbone.Model();
+Person.on('change:name', function() {console.log('Name Changed')});
+Person.set({name: 'Andrew'});
+
+Person.set({name: 'Jeremy'}, {silent: true});
+
+console.log(Person.hasChanged('name'));
+console.log(Person.hasChanged(null));
+
+// Remember where possible it is best practice to use Model.set(), or
+// direct instantiation.
+
+
 
 
 </script>
