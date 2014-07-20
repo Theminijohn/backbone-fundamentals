@@ -21,6 +21,47 @@
 <script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
 <script>
 
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("add", function(todo) {
+  console.log("I should " + todo.get("title") + ". Have I done it before? "  + (todo.get("completed") ? 'Yeah!': 'No.' ));
+});
+
+TodosCollection.add([
+  { title: 'go to Jamaica', completed: false },
+  { title: 'go to China', completed: false },
+  { title: 'go to Disneyland', completed: true }
+]);
+
+// The above logs:
+// I should go to Jamaica. Have I done it before? No.
+// I should go to China. Have I done it before? No.
+// I should go to Disneyland. Have I done it before? Yeah!
+
+
+
+
+
+// log a message if a model in the collection changes
+TodosCollection.on("change:title", function(model) {
+    console.log("Changed my mind! I should " + model.get('title'));
+});
+
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false, id: 3 },
+]);
+
+var myTodo = TodosCollection.get(3);
+
+myTodo.set('title', 'go fishing');
+// Logs: Changed my mind! I should go fishing
+
+
+// jQuery-style event maps of the form obj.on({click: action}) can also be used.
+// These can be clearer than needing three separate calls to .on and should align
+// better with the events hash used in Views:
+
+
 var Todo = Backbone.Model.extend({
   defaults: {
     title: '',
@@ -28,34 +69,61 @@ var Todo = Backbone.Model.extend({
   }
 });
 
-var TodosCollection = Backbone.Collection.extend({
-  model: Todo,
+var myTodo = new Todo();
+myTodo.set({title: 'Buy some cookies', completed: true});
+
+myTodo.on({
+   'change:title' : titleChanged,
+   'change:completed' : stateChanged
 });
 
-var myTodo = new Todo({title:'Read the whole book', id: 2});
+function titleChanged(){
+  console.log('The title was changed!');
+}
 
-// pass array of models on collection instantiation
-var todos = new TodosCollection([myTodo]);
+function stateChanged(){
+  console.log('The state was changed!');
+}
 
-var todo2 = todos.get(2);
+myTodo.set({title: 'Get the groceries'});
+// The title was changed!
 
-// Models, as objects, are passed by reference
-console.log(todo2 === myTodo); // true
 
-/*
-The idAttribute is the identifying attribute name of the model returned from the
-server (i.e., the id in your database). This tells Backbone which data field from
-the server should be used to populate the id property (think of it as a mapper).
-By default, it assumes id, but this can be customized as needed. For instance,
-if your server sets a unique attribute on your model named “userId” then you would
-set idAttribute to “userId” in your model definition.
-*/
 
-var todoCid = todos.get(todo2.cid);
 
-// As mentioned in previous example,
-// models are passed by reference
-console.log(todoCid === myTodo); // true
+
+
+// Define an object with two counters
+var TodoCounter = { counterA: 0, counterB: 0 };
+// Mix in Backbone Events
+_.extend(TodoCounter, Backbone.Events);
+
+// Increment counterA, triggering an event
+var incrA = function(){
+  TodoCounter.counterA += 1;
+  // This triggering will not
+  // produce any efect on the counters
+  TodoCounter.trigger('event');
+};
+
+// Increment counterB
+var incrB = function(){
+  TodoCounter.counterB += 1;
+};
+
+// Use once rather than having to explicitly unbind
+// our event listener
+TodoCounter.once('event', incrA);
+TodoCounter.once('event', incrB);
+
+
+// Trigger the event for the first time
+TodoCounter.trigger('event');
+
+// Check out output
+console.log(TodoCounter.counterA === 1); // true
+console.log(TodoCounter.counterB === 1); // true
+
 
 </script>
 </body>
