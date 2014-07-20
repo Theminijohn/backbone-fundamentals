@@ -21,67 +21,27 @@
 <script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
 <script>
 
-
-
-var TodosCollection = new Backbone.Collection();
-
-// TodosCollection.add([
-//     { id: 1, title: 'go to Jamaica.', completed: false },
-//     { id: 2, title: 'go to China.', completed: false },
-//     { id: 3, title: 'go to Disneyland.', completed: true }
-// ]);
-
-// // we can listen for add/change/remove events
-// TodosCollection.on("add", function(model) {
-//   console.log("Added " + model.get('title'));
-// });
-
-// TodosCollection.on("remove", function(model) {
-//   console.log("Removed " + model.get('title'));
-// });
-
-// TodosCollection.on("change:completed", function(model) {
-//   console.log("Completed " + model.get('title'));
-// });
-
-// TodosCollection.set([
-//     { id: 1, title: 'go to Jamaica.', completed: true },
-//     { id: 2, title: 'go to China.', completed: false },
-//     { id: 4, title: 'go to Disney World.', completed: false }
-// ]);
-
-
-
-// If you need to simply replace the entire content of the collection then
-// Collection.reset() can be used:
-
-TodosCollection.on("reset", function() {
-  console.log("Collection reset.");
+// Define a model of type 'Beatle' with a 'job' attribute
+var Beatle = Backbone.Model.extend({
+  defaults: {
+    job: 'musician'
+  }
 });
 
-TodosCollection.add([
-  { title: 'go to Jamaica.', completed: false },
-  { title: 'go to China.', completed: false },
-  { title: 'go to Disneyland.', completed: true }
-]);
+// Create models for each member of the Beatles
+var john = new Beatle({ firstName: 'John', lastName: 'Lennon'});
+var paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
+var george = new Beatle({ firstName: 'George', lastName: 'Harrison'});
+var ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
 
-console.log('Collection size: ' + TodosCollection.length); // Collection size: 3
+// Create a collection using our models
+var theBeatles = new Backbone.Collection([john, paul, george, ringo]);
 
-TodosCollection.reset([
-  { title: 'go to Cuba.', completed: false }
-]);
+// Create a separate model for Pete Best
+var pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
 
-console.log('Collection size: ' + TodosCollection.length); // Collection size: 1
-
-var todo = new Backbone.Model();
-var todos = new Backbone.Collection([todo])
-.on('reset', function(todos, options) {
-  console.log(options.previousModels);
-  console.log([todo]);
-  console.log(options.previousModels[0] === todo); // true
-});
-todos.reset([]);
-
+// Update the collection
+theBeatles.set([john, paul, george, pete]);
 
 </script>
 </body>
