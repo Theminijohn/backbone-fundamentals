@@ -22,90 +22,21 @@
 <script>
 
 
+var a = _.extend({}, Backbone.Events);
+var b = _.extend({}, Backbone.Events);
+var c = _.extend({}, Backbone.Events);
 
+// Add listeners to A for events on B and C
+a.listenTo(b, 'anything', function(event){ console.log('anything happened') });
+a.listenTo(c, 'everything', function(event){ console.log('everything happened') });
 
-// Backbone.on('event', function() {console.log('Handled Backbone event');});
-// Backbone.trigger('event'); // logs: Handled Backbone event
+b.trigger('anything');
 
-// var ourObject = {};
+a.stopListening();
 
-// // Mixin
-// _.extend(ourObject, Backbone.Events);
-
-// // Add a custom event
-// ourObject.on('dance', function(msg){
-//   console.log('We triggered ' + msg);
-// });
-
-// // Trigger the custom event
-// ourObject.trigger('dance', 'our event');
-Backbone.on('event', function() {console.log('Handled Backbone event');});
-// Backbone.trigger('event'); // logs: Handled Backbone event
-
-// var ourObject = {};
-
-// // Mixin
-// _.extend(ourObject, Backbone.Events);
-
-// // Add a custom event
-// ourObject.on('dance', function(msg){
-//   console.log('We triggered ' + msg);
-// });
-
-
-
-
-
-
-
-// // Trigger the custom event
-// ourObject.trigger('dance', 'our event');
-// var ourObject = {};
-
-// // Add the Mixin
-// _.extend(ourObject, Backbone.Events);
-
-// function dancing(msg) {
-//   console.log('We started ' + msg)
-// };
-
-// // Add namespaded custom events
-// ourObject.on('dance:trap', dancing);
-// ourObject.on('dance:break', dancing);
-
-// // Trigger the custom events
-// ourObject.trigger('dance:trap', 'Tap dancing... Yeah !');
-// ourObject.trigger('dance:break', 'breakdancing.. yiha');
-
-
-// ourObject.trigger("dance", "break dancing. Yeah!");
-
-
-
-
-var ourObject = {};
-
-// mixin
-_.extend(ourObject, Backbone.Events);
-
-function dancing(msg){
-  console.log('We started ' + msg)
-};
-
-ourObject.on('all', function(eventName){
-  console.log('The name of  the event passed was ' + eventName);
-});
-
-ourObject.trigger("dance:tap", "tap dancing. Yeah!");
-ourObject.trigger("dance:break", "break dancing. Yeah!");
-ourObject.trigger("dance", "break dancing. Yeah!");
-
-// Removes event bound to the object
-ourObject.off("dance:tap");
-
-// Trigger the custom events again, but one is logged.
-ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it's not listened for
-ourObject.trigger("dance:break", "break dancing. Yeah!");
+// A does not receive these events
+b.trigger('anything');
+c.trigger('everything');
 
 </script>
 </body>
