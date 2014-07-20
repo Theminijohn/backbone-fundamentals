@@ -22,66 +22,90 @@
 <script>
 
 
-// ########### Saving to the Server ###########
-// var Todo = Backbone.Model.extend({
-//   defaults: {
-//     title: '',
-//     completed: false
-//   }
+
+
+// Backbone.on('event', function() {console.log('Handled Backbone event');});
+// Backbone.trigger('event'); // logs: Handled Backbone event
+
+// var ourObject = {};
+
+// // Mixin
+// _.extend(ourObject, Backbone.Events);
+
+// // Add a custom event
+// ourObject.on('dance', function(msg){
+//   console.log('We triggered ' + msg);
 // });
 
-// var TodosCollection = Backbone.Collection.extend({
-//   model: Todo,
-//   url: '/todos'
+// // Trigger the custom event
+// ourObject.trigger('dance', 'our event');
+Backbone.on('event', function() {console.log('Handled Backbone event');});
+// Backbone.trigger('event'); // logs: Handled Backbone event
+
+// var ourObject = {};
+
+// // Mixin
+// _.extend(ourObject, Backbone.Events);
+
+// // Add a custom event
+// ourObject.on('dance', function(msg){
+//   console.log('We triggered ' + msg);
 // });
 
-// var todos = new TodosCollection();
-// todos.fetch();
-
-// var todo2 = todos.get(2);
-// todo2.set('title', 'go fishing');
-// todo2.save(); // sends HTTP PUT to /todos/2
-
-// todos.create({title: 'Try out code samples'}); // sends HTTP POST to /todos and adds to collection
 
 
 
-// ########### Deleting from the Server ###########
 
-var Todo = Backbone.Model.extend({
-  defaults: {
-    title: '',
-    completed: false
-  }
+
+
+// // Trigger the custom event
+// ourObject.trigger('dance', 'our event');
+// var ourObject = {};
+
+// // Add the Mixin
+// _.extend(ourObject, Backbone.Events);
+
+// function dancing(msg) {
+//   console.log('We started ' + msg)
+// };
+
+// // Add namespaded custom events
+// ourObject.on('dance:trap', dancing);
+// ourObject.on('dance:break', dancing);
+
+// // Trigger the custom events
+// ourObject.trigger('dance:trap', 'Tap dancing... Yeah !');
+// ourObject.trigger('dance:break', 'breakdancing.. yiha');
+
+
+// ourObject.trigger("dance", "break dancing. Yeah!");
+
+
+
+
+var ourObject = {};
+
+// mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing(msg){
+  console.log('We started ' + msg)
+};
+
+ourObject.on('all', function(eventName){
+  console.log('The name of  the event passed was ' + eventName);
 });
 
-var TodosCollection = Backbone.Collection.extend({
-  model: Todo,
-  url: '/todos'
-});
+ourObject.trigger("dance:tap", "tap dancing. Yeah!");
+ourObject.trigger("dance:break", "break dancing. Yeah!");
+ourObject.trigger("dance", "break dancing. Yeah!");
 
-var todos = new TodosCollection();
-todos.fetch();
+// Removes event bound to the object
+ourObject.off("dance:tap");
 
-var todo2 = todos.get(2);
-todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
-
-
-// Calling destroy on a Model will return false if the model isNew:
-var todo = new Backbone.Model();
-console.log(todo.destroy());
-// false
-
-
-
-
-
-
-
-
-
-
-
+// Trigger the custom events again, but one is logged.
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it's not listened for
+ourObject.trigger("dance:break", "break dancing. Yeah!");
 
 </script>
 </body>
