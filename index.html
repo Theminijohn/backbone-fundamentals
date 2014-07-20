@@ -32,37 +32,30 @@ var TodosCollection = Backbone.Collection.extend({
   model: Todo,
 });
 
-var a = new Todo({ title: 'Go to Jamaica.'}),
-    b = new Todo({ title: 'Go to China.'}),
-    c = new Todo({ title: 'Go to Disneyland.'});
+var myTodo = new Todo({title:'Read the whole book', id: 2});
 
-var todos = new TodosCollection([a,b]);
-console.log("Collection size: " + todos.length);
-// Logs: Collection size: 2
+// pass array of models on collection instantiation
+var todos = new TodosCollection([myTodo]);
 
-todos.add(c);
-console.log("Collection size: " + todos.length);
-// Logs: Collection size: 3
+var todo2 = todos.get(2);
 
-todos.remove([a,b]);
-console.log("Collection size: " + todos.length);
-// Logs: Collection size: 1
+// Models, as objects, are passed by reference
+console.log(todo2 === myTodo); // true
 
-todos.remove(c);
-console.log("Collection size: " + todos.length);
-// Logs: Collection size: 0
+/*
+The idAttribute is the identifying attribute name of the model returned from the
+server (i.e., the id in your database). This tells Backbone which data field from
+the server should be used to populate the id property (think of it as a mapper).
+By default, it assumes id, but this can be customized as needed. For instance,
+if your server sets a unique attribute on your model named “userId” then you would
+set idAttribute to “userId” in your model definition.
+*/
 
-// Also note that when using add() on a collection, passing {merge: true} causes
-// duplicate models to have their attributes merged in to the existing models,
-// instead of being ignored.
+var todoCid = todos.get(todo2.cid);
 
-var items = new Backbone.Collection;
-items.add([{ id : 1, name: "Dog" , age: 3}, { id : 2, name: "cat" , age: 2}]);
-items.add([{ id : 1, name: "Bear" }], {merge: true });
-items.add([{ id : 2, name: "lion" }]); // merge: false
-
-console.log(JSON.stringify(items.toJSON()));
-// [{"id":1,"name":"Bear","age":3},{"id":2,"name":"cat","age":2}]
+// As mentioned in previous example,
+// models are passed by reference
+console.log(todoCid === myTodo); // true
 
 </script>
 </body>
